@@ -144,7 +144,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
     
     override func updateUserActivityState(activity: NSUserActivity) {
         
-        let imageData: NSData = UIImagePNGRepresentation(self.cityImage)!
+        let imageData: NSData = UIImageJPEGRepresentation(self.cityImage, 0)!
         
         activity.addUserInfoEntriesFromDictionary([UserActivityConstants.kcityNameKey: self.cityName.text! as String, UserActivityConstants.kcityImageDataKey: imageData, UserActivityConstants.kcityDescriptionKey: self.cityDescription.text as String])
         super.updateUserActivityState(activity)

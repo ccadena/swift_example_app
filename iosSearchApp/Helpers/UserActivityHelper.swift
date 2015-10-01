@@ -34,7 +34,7 @@ class UserActivityHelper: NSObject {
      func indexItemForSearch(item: Item) -> NSUserActivity
     {
         //NSUserActivity to be used
-        let imageData: NSData = UIImagePNGRepresentation(item.iconPhoto)!
+        let imageData: NSData = UIImageJPEGRepresentation(item.iconPhoto, 0)!
         
         let activity = NSUserActivity(activityType: "com.ccadena.iosSearchApp.cityDetail")
         

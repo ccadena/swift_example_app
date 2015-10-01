@@ -49,7 +49,7 @@ class CityDetailViewController: UIViewController {
     
     override func updateUserActivityState(activity: NSUserActivity) {
         
-        let imageData: NSData = UIImagePNGRepresentation(self.cityImage.image!)!
+        let imageData: NSData = UIImageJPEGRepresentation(self.cityImage.image!, 0)!
         
         activity.addUserInfoEntriesFromDictionary([UserActivityConstants.kcityNameKey: self.cityName.text! as String, UserActivityConstants.kcityImageDataKey: imageData, UserActivityConstants.kcityDescriptionKey: self.cityDescription.text as String])
         super.updateUserActivityState(activity)
