@@ -8,6 +8,12 @@
 
 import UIKit
 
+struct UserActivityConstants {
+    static let kcityNameKey = "cityName"
+    static let kcityImageDataKey = "cityImageData"
+    static let kcityDescriptionKey = "cityDescription"
+}
+
 private let _sharedInstance = UserActivityHelper()
 
 class UserActivityHelper: NSObject {
@@ -27,11 +33,13 @@ class UserActivityHelper: NSObject {
     
      func indexItemForSearch(item: Item) -> NSUserActivity
     {
-        //Creates NSUserActivity to be used
-        let imageData: NSData = UIImageJPEGRepresentation(item.iconPhoto, 0)!
+        //NSUserActivity to be used
+        let imageData: NSData = UIImagePNGRepresentation(item.iconPhoto)!
         
         let activity = NSUserActivity(activityType: "com.ccadena.iosSearchApp.cityDetail")
-        activity.userInfo = ["cityName": item.titleText, "cityImageData": imageData, "cityDescription": item.descriptionText]
+        
+        activity.userInfo = [UserActivityConstants.kcityNameKey: item.titleText, UserActivityConstants.kcityImageDataKey: imageData, UserActivityConstants.kcityDescriptionKey: item.descriptionText]
+        
         activity.title = item.titleText
         var keywords = item.titleText.componentsSeparatedByString(" ")
         keywords.append(item.descriptionText)
@@ -41,7 +49,7 @@ class UserActivityHelper: NSObject {
         //activity.eligibleForPublicIndexing = true
         //activity.expirationDate = NSDate()
         
-        activity.addUserInfoEntriesFromDictionary(["cityName": item.titleText, "cityImageData": imageData, "cityDescription": item.descriptionText])
+        activity.addUserInfoEntriesFromDictionary([UserActivityConstants.kcityNameKey: item.titleText, UserActivityConstants.kcityImageDataKey: imageData, UserActivityConstants.kcityDescriptionKey: item.descriptionText])
         
         return activity
     }

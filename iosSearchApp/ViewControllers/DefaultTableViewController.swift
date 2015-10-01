@@ -128,11 +128,11 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
     
     override func restoreUserActivityState(activity: NSUserActivity) {
         
-        if let cityName = activity.userInfo?["cityName"] as? String
+        if let cityName = activity.userInfo?[UserActivityConstants.kcityNameKey] as? String
         {
-            if let cityDescription = activity.userInfo?["cityDescription"] as? String
+            if let cityDescription = activity.userInfo?[UserActivityConstants.kcityDescriptionKey] as? String
             {
-                let image = UIImage(data: (activity.userInfo?["cityImageData"])! as! NSData)
+                let image = UIImage(data: (activity.userInfo?[UserActivityConstants.kcityImageDataKey])! as! NSData)
                 
                 if let city = Item(titleText: cityName, iconPhoto: image! , descriptionText: cityDescription)
                 {
@@ -148,15 +148,4 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

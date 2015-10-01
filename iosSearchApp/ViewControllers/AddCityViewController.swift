@@ -134,7 +134,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         }
     }
     
-    //MARK: NSUSERACTIVITY INDEXING
+    //MARK: - NSUserActivity
     
     func indexNewCity(item: Item)
     {
@@ -142,16 +142,12 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         self.userActivity!.becomeCurrent()
     }
     
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func updateUserActivityState(activity: NSUserActivity) {
+        
+        let imageData: NSData = UIImagePNGRepresentation(self.cityImage)!
+        
+        activity.addUserInfoEntriesFromDictionary([UserActivityConstants.kcityNameKey: self.cityName.text! as String, UserActivityConstants.kcityImageDataKey: imageData, UserActivityConstants.kcityDescriptionKey: self.cityDescription.text as String])
+        super.updateUserActivityState(activity)
     }
-    */
 
 }

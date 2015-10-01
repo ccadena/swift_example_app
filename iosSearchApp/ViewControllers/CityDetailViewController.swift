@@ -49,21 +49,9 @@ class CityDetailViewController: UIViewController {
     
     override func updateUserActivityState(activity: NSUserActivity) {
         
-        let imageData: NSData = UIImageJPEGRepresentation(self.cityImage.image!, 0)!
+        let imageData: NSData = UIImagePNGRepresentation(self.cityImage.image!)!
         
-        activity.addUserInfoEntriesFromDictionary(["cityName": self.cityName.text! as String, "cityImageData": imageData, "cityDescription": self.cityDescription.text as String])
+        activity.addUserInfoEntriesFromDictionary([UserActivityConstants.kcityNameKey: self.cityName.text! as String, UserActivityConstants.kcityImageDataKey: imageData, UserActivityConstants.kcityDescriptionKey: self.cityDescription.text as String])
         super.updateUserActivityState(activity)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
