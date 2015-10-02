@@ -73,7 +73,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         self.cityName.resignFirstResponder()
         self.cityDescription.resignFirstResponder()
         
-        let currentItem = Item(titleText: self.cityName.text!, iconPhoto: self.cityImage , descriptionText: self.cityDescription.text!)!
+        let currentItem = Item(titleText: self.cityName.text!, iconPhoto: self.cityImage , descriptionText: self.cityDescription.text!, index: itemsArray.count)!
         
         self.itemsArray.append(currentItem)
         
@@ -85,7 +85,8 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
             }
             else
             {
-                print("Erro saving City! No index actions were performed")
+                print("*** IOS9 SEARCHAPP ***")
+                print("Error saving City! No index actions were performed")
             }
         }
     }
@@ -134,24 +135,19 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         }
     }
     
-    //MARK: NSUSERACTIVITY INDEXING
+    //MARK: - NSUserActivity
     
     func indexNewCity(item: Item)
     {
         self.userActivity = UserActivityHelper.sharedInstance.indexItemForSearch(item)
         self.userActivity!.becomeCurrent()
+        updateUserActivityState(self.userActivity!)
     }
     
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func updateUserActivityState(activity: NSUserActivity) {
+        
+        activity.addUserInfoEntriesFromDictionary([UserActivityConstants.kcityNameKey: self.cityName.text! as String, UserActivityConstants.kcityDescriptionKey: self.cityDescription.text as String, UserActivityConstants.kcityIndexKey: itemsArray.count-1 as Int])
+        super.updateUserActivityState(activity)
     }
-    */
 
 }

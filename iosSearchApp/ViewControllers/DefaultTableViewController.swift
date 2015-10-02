@@ -52,10 +52,10 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
     
     func fillItemsArray(){
         let firtsPhoto = UIImage(named:"firstCity")!
-        let firstItem = Item(titleText: "Bogotá", iconPhoto: firtsPhoto , descriptionText: "Capital")!
+        let firstItem = Item(titleText: "Bogotá", iconPhoto: firtsPhoto , descriptionText: "Capital", index: 0)!
         
         let secondPhoto = UIImage(named:"secondCity")!
-        let secondItem = Item(titleText: "Medellín", iconPhoto: secondPhoto , descriptionText: "Capital Paisa")!
+        let secondItem = Item(titleText: "Medellín", iconPhoto: secondPhoto , descriptionText: "Capital Paisa", index: 1)!
         
         itemsArray += [firstItem, secondItem]
 
@@ -97,9 +97,9 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
             if retrivedFromSearch
             {
                 retrivedFromSearch = false
-                if let retrivedItem = sender as? Item
+                if let retrivedItemIndex = sender as? Int
                 {
-                    cityDetailViewController.item = retrivedItem
+                    cityDetailViewController.item = itemsArray[retrivedItemIndex]
                 }
             }
             else
@@ -128,16 +128,17 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
     
     override func restoreUserActivityState(activity: NSUserActivity) {
         
-        if let cityName = activity.userInfo?["cityName"] as? String
+        if let cityName = activity.userInfo?[UserActivityConstants.kcityNameKey] as? String
         {
-            if let cityDescription = activity.userInfo?["cityDescription"] as? String
+            if let cityDescription = activity.userInfo?[UserActivityConstants.kcityDescriptionKey] as? String
             {
-                let image = UIImage(data: (activity.userInfo?["cityImageData"])! as! NSData)
-                
-                if let city = Item(titleText: cityName, iconPhoto: image! , descriptionText: cityDescription)
+                if let cityIndex = activity.userInfo?[UserActivityConstants.kcityIndexKey] as? Int
                 {
+                    print("*** IOS9 SEARCHAPP ***")
+                    print("Retrived City: ",cityName,"\nDescription: ", cityDescription, "\nindex: ", cityIndex)
+                    
                     retrivedFromSearch = true
-                    self.performSegueWithIdentifier(viewControllerConstants.kShowSelectedCitySegue, sender: city)
+                    self.performSegueWithIdentifier(viewControllerConstants.kShowSelectedCitySegue, sender: cityIndex)
                 }
                 else{
                     let alert = UIAlertController(title: "Error", message: "Error retrieving information from userInfo:\n\(activity.userInfo)", preferredStyle: .Alert)
@@ -145,18 +146,8 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
                     
                     self.presentViewController(alert, animated: true, completion: nil)
                 }
+                
             }
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
