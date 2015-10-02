@@ -73,7 +73,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         self.cityName.resignFirstResponder()
         self.cityDescription.resignFirstResponder()
         
-        let currentItem = Item(titleText: self.cityName.text!, iconPhoto: self.cityImage , descriptionText: self.cityDescription.text!)!
+        let currentItem = Item(titleText: self.cityName.text!, iconPhoto: self.cityImage , descriptionText: self.cityDescription.text!, index: itemsArray.count)!
         
         self.itemsArray.append(currentItem)
         
@@ -85,7 +85,8 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
             }
             else
             {
-                print("Erro saving City! No index actions were performed")
+                print("*** IOS9 SEARCHAPP ***")
+                print("Error saving City! No index actions were performed")
             }
         }
     }
@@ -140,13 +141,12 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
     {
         self.userActivity = UserActivityHelper.sharedInstance.indexItemForSearch(item)
         self.userActivity!.becomeCurrent()
+        updateUserActivityState(self.userActivity!)
     }
     
     override func updateUserActivityState(activity: NSUserActivity) {
         
-        let imageData: NSData = UIImageJPEGRepresentation(self.cityImage, 0)!
-        
-        activity.addUserInfoEntriesFromDictionary([UserActivityConstants.kcityNameKey: self.cityName.text! as String, UserActivityConstants.kcityImageDataKey: imageData, UserActivityConstants.kcityDescriptionKey: self.cityDescription.text as String])
+        activity.addUserInfoEntriesFromDictionary([UserActivityConstants.kcityNameKey: self.cityName.text! as String, UserActivityConstants.kcityDescriptionKey: self.cityDescription.text as String, UserActivityConstants.kcityIndexKey: itemsArray.count-1 as Int])
         super.updateUserActivityState(activity)
     }
 

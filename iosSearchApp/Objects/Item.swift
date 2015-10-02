@@ -12,21 +12,24 @@ struct itemKey {
     static let titleTextKey = "titleTextKey"
     static let iconPhotoKey = "iconPhoto"
     static let descriptionTextKey = "descriptionText"
+    static let indexKey = "index"
 }
 
 class Item: NSObject, NSCoding {
 
     var titleText: String
-    var iconPhoto: UIImage
+    var iconPhoto: UIImage?
     var descriptionText: String
+    var index: Int
     
     static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("items")
     
-    init?(titleText: String, iconPhoto: UIImage, descriptionText: String) {
+    init?(titleText: String, iconPhoto: UIImage, descriptionText: String, index: Int) {
         self.titleText = titleText
         self.descriptionText = descriptionText
         self.iconPhoto = iconPhoto
+        self.index = index
         
         super.init()
         
@@ -42,13 +45,15 @@ class Item: NSObject, NSCoding {
         aCoder.encodeObject(titleText, forKey: itemKey.titleTextKey)
         aCoder.encodeObject(iconPhoto, forKey: itemKey.iconPhotoKey)
         aCoder.encodeObject(descriptionText, forKey: itemKey.descriptionTextKey)
+        aCoder.encodeObject(index, forKey:itemKey.indexKey)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
         let titleText = aDecoder.decodeObjectForKey(itemKey.titleTextKey) as! String
         let iconPhoto = aDecoder.decodeObjectForKey(itemKey.iconPhotoKey) as? UIImage
         let descriptionText = aDecoder.decodeObjectForKey(itemKey.descriptionTextKey) as! String
+        let index = aDecoder.decodeObjectForKey(itemKey.indexKey) as! Int
         
-        self.init(titleText: titleText, iconPhoto: iconPhoto!, descriptionText: descriptionText)
+        self.init(titleText: titleText, iconPhoto: iconPhoto!, descriptionText: descriptionText, index: index)
     }
 }
