@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9910F6051BBE2D0C00FEA4C3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9910F6041BBE2D0C00FEA4C3 /* MobileCoreServices.framework */; };
 		993381FC1BBA38B1001AE43F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 993381FB1BBA38B1001AE43F /* AppDelegate.swift */; };
 		993382011BBA38B1001AE43F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 993381FF1BBA38B1001AE43F /* Main.storyboard */; };
 		993382031BBA38B1001AE43F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 993382021BBA38B1001AE43F /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9910F6041BBE2D0C00FEA4C3 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		993381F81BBA38B1001AE43F /* iosSearchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosSearchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		993381FB1BBA38B1001AE43F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		993382001BBA38B1001AE43F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -41,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9910F6051BBE2D0C00FEA4C3 /* MobileCoreServices.framework in Frameworks */,
 				99DD77011BBCC421004758E9 /* CoreSpotlight.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,6 +54,7 @@
 		993381EF1BBA38B1001AE43F = {
 			isa = PBXGroup;
 			children = (
+				9910F6041BBE2D0C00FEA4C3 /* MobileCoreServices.framework */,
 				99DD77001BBCC421004758E9 /* CoreSpotlight.framework */,
 				993381FA1BBA38B1001AE43F /* iosSearchApp */,
 				993381F91BBA38B1001AE43F /* Products */,

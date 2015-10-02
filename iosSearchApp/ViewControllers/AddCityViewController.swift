@@ -80,7 +80,12 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         archiveItems(){ result in
             if result
             {
-                self.indexNewCity(currentItem)
+                // index city if CoreSpotlight API is off
+                if(!GlobalConstants.kActivateCoreSpotlightAPI)
+                {
+                    self.indexNewCity(currentItem)
+                }
+
                 self.navigationController?.popViewControllerAnimated(true)
             }
             else

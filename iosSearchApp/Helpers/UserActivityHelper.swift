@@ -35,7 +35,7 @@ class UserActivityHelper: NSObject {
      func indexItemForSearch(item: Item) -> NSUserActivity
     {
         //NSUserActivity to be used        
-        let activity = NSUserActivity(activityType: "com.ccadena.iosSearchApp.cityDetail")
+        let activity = NSUserActivity(activityType: GlobalConstants.kActivityType)
         
         activity.userInfo = [UserActivityConstants.kcityNameKey: item.titleText, UserActivityConstants.kcityDescriptionKey: item.descriptionText, UserActivityConstants.kcityIndexKey: item.index]
         
@@ -49,6 +49,7 @@ class UserActivityHelper: NSObject {
         //activity.expirationDate = NSDate()
         
         activity.addUserInfoEntriesFromDictionary([UserActivityConstants.kcityNameKey: item.titleText, UserActivityConstants.kcityDescriptionKey: item.descriptionText, UserActivityConstants.kcityIndexKey: item.index])
+        
         
         return activity
     }

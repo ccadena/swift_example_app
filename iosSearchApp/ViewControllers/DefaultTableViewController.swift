@@ -7,11 +7,17 @@
 //
 
 import UIKit
+import CoreSpotlight
 
-struct viewControllerConstants {
+struct GlobalConstants {
+    // set it to true to activate CoreSpotlig search API and deactivate NSUserActivity API
+    // false value activates NSUserActivity API
+    static let kActivateCoreSpotlightAPI = false
+    
     static let kCustomTableViewCellIdentifier = "ItemsTableViewCell"
     static let kShowSelectedCitySegue = "detailSelected"
     static let kShowAddCitySegue = "addCity"
+    static let kActivityType = "com.ccadena.iosSearchApp.cityDetail"
 }
 
 class defaultTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -34,11 +40,22 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
             {
                 itemsArray = archiedItems
                 
+                if(GlobalConstants.kActivateCoreSpotlightAPI)
+                {
+                    saveCitiesToIndex()
+                }
+                
                 self.tableView.reloadSections(NSIndexSet.init(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
             }
             
         } else if self.itemsArray.count == 0 {
             fillItemsArray()
+            
+            if(GlobalConstants.kActivateCoreSpotlightAPI)
+            {
+                saveCitiesToIndex()
+            }
+            
             self.tableView.reloadData()
         }
     }
@@ -71,7 +88,7 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cellIdentifier = viewControllerConstants.kCustomTableViewCellIdentifier
+        let cellIdentifier = GlobalConstants.kCustomTableViewCellIdentifier
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! CustomTableViewCell
         
         let item = itemsArray[indexPath.row]
@@ -90,7 +107,7 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
     //MARK: Segue Method
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        if segue.identifier == viewControllerConstants.kShowSelectedCitySegue
+        if segue.identifier == GlobalConstants.kShowSelectedCitySegue
         {
             let cityDetailViewController = segue.destinationViewController as! CityDetailViewController
             
@@ -112,7 +129,7 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
                 }
             }
         }
-        else if segue.identifier == viewControllerConstants.kShowAddCitySegue
+        else if segue.identifier == GlobalConstants.kShowAddCitySegue
         {
             let addCityViewController = segue.destinationViewController as! AddCityViewController
             addCityViewController.itemsArray = self.itemsArray
@@ -125,20 +142,26 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
         return NSKeyedUnarchiver.unarchiveObjectWithFile(Item.ArchiveURL.path!) as? [Item]
     }
 
-    
+
+    // MARK: NSUserActivity
     override func restoreUserActivityState(activity: NSUserActivity) {
         
-        if let cityName = activity.userInfo?[UserActivityConstants.kcityNameKey] as? String
+        /*if let cityName = activity.userInfo?[UserActivityConstants.kcityNameKey] as? String
         {
             if let cityDescription = activity.userInfo?[UserActivityConstants.kcityDescriptionKey] as? String
-            {
+            {*/
                 if let cityIndex = activity.userInfo?[UserActivityConstants.kcityIndexKey] as? Int
                 {
                     print("*** IOS9 SEARCHAPP ***")
-                    print("Retrived City: ",cityName,"\nDescription: ", cityDescription, "\nindex: ", cityIndex)
+                   // print("Retrived City: ",cityName,"\nDescription: ", cityDescription, "\nindex: ", cityIndex)
                     
                     retrivedFromSearch = true
-                    self.performSegueWithIdentifier(viewControllerConstants.kShowSelectedCitySegue, sender: cityIndex)
+                    self.performSegueWithIdentifier(GlobalConstants.kShowSelectedCitySegue, sender: cityIndex)
+                }
+                else if let cityIndex = activity.userInfo?["kCSSearchableItemActivityIdentifier"] as? String
+                {
+                    retrivedFromSearch = true
+                    self.performSegueWithIdentifier(GlobalConstants.kShowSelectedCitySegue, sender: Int(cityIndex))
                 }
                 else{
                     let alert = UIAlertController(title: "Error", message: "Error retrieving information from userInfo:\n\(activity.userInfo)", preferredStyle: .Alert)
@@ -147,7 +170,30 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
                     self.presentViewController(alert, animated: true, completion: nil)
                 }
                 
-            }
-        }
+           // }
+        //}
     }
+    
+    //MARK: CoreSpotlight
+    func saveCitiesToIndex() {
+        
+        var searchableItems = [CSSearchableItem]()
+        
+        for item in itemsArray {
+            let attributeSet = CSSearchableItemAttributeSet(itemContentType: "image" as String)
+            attributeSet.title = item.titleText
+            attributeSet.contentDescription = item.descriptionText
+            attributeSet.thumbnailData = UIImagePNGRepresentation(item.iconPhoto!)
+            
+            let item = CSSearchableItem(uniqueIdentifier: (item.index as NSNumber).stringValue, domainIdentifier: GlobalConstants.kActivityType, attributeSet: attributeSet)
+            searchableItems.append(item)
+        }
+        
+        CSSearchableIndex.defaultSearchableIndex().indexSearchableItems(searchableItems, completionHandler: { error -> Void in
+            if error != nil {
+                print(error?.localizedDescription)
+            }
+        })
+    }
+    
 }
