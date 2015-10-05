@@ -14,6 +14,9 @@ struct GlobalConstants {
     // false value activates NSUserActivity API
     static let kActivateCoreSpotlightAPI = false
     
+    // Set CS content properties to enrich the NSUserActivity result
+    static let kEnrichUserActivityWithCS = false
+    
     static let kCustomTableViewCellIdentifier = "ItemsTableViewCell"
     static let kShowSelectedCitySegue = "detailSelected"
     static let kShowAddCitySegue = "addCity"
@@ -43,6 +46,10 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
                 if(GlobalConstants.kActivateCoreSpotlightAPI)
                 {
                     saveCitiesToIndex()
+                }
+                else
+                {
+                    clearIndexedCities()
                 }
                 
                 self.tableView.reloadSections(NSIndexSet.init(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -180,7 +187,7 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
         var searchableItems = [CSSearchableItem]()
         
         for item in itemsArray {
-            let attributeSet = CSSearchableItemAttributeSet(itemContentType: "image" as String)
+            let attributeSet = CSSearchableItemAttributeSet(itemContentType: "iosSearchAppItem" as String)
             attributeSet.title = item.titleText
             attributeSet.contentDescription = item.descriptionText
             attributeSet.thumbnailData = UIImagePNGRepresentation(item.iconPhoto!)
@@ -190,6 +197,14 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         CSSearchableIndex.defaultSearchableIndex().indexSearchableItems(searchableItems, completionHandler: { error -> Void in
+            if error != nil {
+                print(error?.localizedDescription)
+            }
+        })
+    }
+    
+    func clearIndexedCities(){
+        CSSearchableIndex.defaultSearchableIndex().deleteSearchableItemsWithDomainIdentifiers([GlobalConstants.kActivityType], completionHandler:{ error -> Void in
             if error != nil {
                 print(error?.localizedDescription)
             }

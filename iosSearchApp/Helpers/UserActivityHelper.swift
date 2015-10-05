@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreSpotlight
+import MobileCoreServices
 
 struct UserActivityConstants {
     static let kcityNameKey = "cityName"
@@ -50,6 +52,12 @@ class UserActivityHelper: NSObject {
         
         activity.addUserInfoEntriesFromDictionary([UserActivityConstants.kcityNameKey: item.titleText, UserActivityConstants.kcityDescriptionKey: item.descriptionText, UserActivityConstants.kcityIndexKey: item.index])
         
+        if GlobalConstants.kEnrichUserActivityWithCS{
+            let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
+            attributeSet.title = item.titleText
+            attributeSet.contentDescription = item.descriptionText
+            activity.contentAttributeSet = attributeSet
+        }
         
         return activity
     }
