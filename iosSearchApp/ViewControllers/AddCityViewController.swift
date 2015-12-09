@@ -131,7 +131,8 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         let isSaveCompleted = NSKeyedArchiver.archiveRootObject(itemsArray, toFile: Item.ArchiveURL.path!)
         if isSaveCompleted
         {
-            NSLog("City Saved!")
+            print("*** IOS9 SEARCHAPP ***")
+            print("City saved")
             completion(result: true)
         }
         else
@@ -141,7 +142,6 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, UITextViewDe
     }
     
     //MARK: - NSUserActivity
-    
     func indexNewCity(item: Item)
     {
         self.userActivity = UserActivityHelper.sharedInstance.indexItemForSearch(item)

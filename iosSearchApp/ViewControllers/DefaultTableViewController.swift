@@ -153,32 +153,24 @@ class defaultTableViewController: UIViewController, UITableViewDelegate, UITable
     // MARK: NSUserActivity
     override func restoreUserActivityState(activity: NSUserActivity) {
         
-        /*if let cityName = activity.userInfo?[UserActivityConstants.kcityNameKey] as? String
+        if let cityIndex = activity.userInfo?[UserActivityConstants.kcityIndexKey] as? Int
         {
-            if let cityDescription = activity.userInfo?[UserActivityConstants.kcityDescriptionKey] as? String
-            {*/
-                if let cityIndex = activity.userInfo?[UserActivityConstants.kcityIndexKey] as? Int
-                {
-                    print("*** IOS9 SEARCHAPP ***")
-                   // print("Retrived City: ",cityName,"\nDescription: ", cityDescription, "\nindex: ", cityIndex)
-                    
-                    retrivedFromSearch = true
-                    self.performSegueWithIdentifier(GlobalConstants.kShowSelectedCitySegue, sender: cityIndex)
-                }
-                else if let cityIndex = activity.userInfo?["kCSSearchableItemActivityIdentifier"] as? String
-                {
-                    retrivedFromSearch = true
-                    self.performSegueWithIdentifier(GlobalConstants.kShowSelectedCitySegue, sender: Int(cityIndex))
-                }
-                else{
-                    let alert = UIAlertController(title: "Error", message: "Error retrieving information from userInfo:\n\(activity.userInfo)", preferredStyle: .Alert)
-                    alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
-                    
-                    self.presentViewController(alert, animated: true, completion: nil)
-                }
-                
-           // }
-        //}
+            print("*** IOS9 SEARCHAPP ***")
+            
+            retrivedFromSearch = true
+            self.performSegueWithIdentifier(GlobalConstants.kShowSelectedCitySegue, sender: cityIndex)
+        }
+        else if let cityIndex = activity.userInfo?["kCSSearchableItemActivityIdentifier"] as? String
+        {
+            retrivedFromSearch = true
+            self.performSegueWithIdentifier(GlobalConstants.kShowSelectedCitySegue, sender: Int(cityIndex))
+        }
+        else{
+            let alert = UIAlertController(title: "Error", message: "Error retrieving information from userInfo:\n\(activity.userInfo)", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     //MARK: CoreSpotlight

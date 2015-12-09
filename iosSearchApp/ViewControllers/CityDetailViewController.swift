@@ -38,7 +38,6 @@ class CityDetailViewController: UIViewController {
                 self.cityDescription.text = item.descriptionText
                 self.cityImage.image = item.iconPhoto
                 
-                
                 if(!GlobalConstants.kActivateCoreSpotlightAPI)
                 {
                     self.userActivity = UserActivityHelper.sharedInstance.indexItemForSearch(item)
